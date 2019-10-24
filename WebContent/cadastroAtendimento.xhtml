@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="_template.xhtml">
+
+		<h:head />
+	
+		<!-- 	<ui:define name="titulo"> -->
+		<!-- 		Cad-Aten -->
+		<!-- 	</ui:define> -->
+	
+		<ui:define name="conteudo">
+			
+			<h:form id="cad_atendimento">
+				
+				<p:fieldset legend="Cadastro atendimento">
+				
+					<h:panelGrid columns="3"> 
+	
+						<p:outputLabel value="Solicitante:" for="solicitante" />
+						<p:inputText
+								id="solicitante"
+								value="#{atendimentoBean.atendimento.solicitante}"
+								required="true" requiredMessage="Solicitante obrigatório"
+								style="width: 350px;">
+								
+								<f:ajax event="blur" render="messageSolicitante" />
+								<f:passThroughAttribute name="placeholder" value="Ex: Jonathan Edwards" />
+						</p:inputText>
+						
+						<p:message for="solicitante" id="messageSolicitante" />
+						
+						<p:outputLabel value="Motivo:" for="motivo" />
+						<p:inputText 
+								id="motivo"
+								value="#{atendimentoBean.atendimento.motivo}"
+								required="true" requiredMessage="Motivo obrigatório"
+								style="width: 350px;">
+							
+								<f:ajax event="blur" render="messageMotivo" />
+								<f:passThroughAttribute name="placeholder" value="Ex: Internet / Impressora" />
+							
+						</p:inputText>
+						
+						<p:message for="motivo" id="messageMotivo" />
+	
+						<p:outputLabel for="data" value="Data:" />
+       					<p:calendar 
+       						id="data" 
+       						value="#{atendimentoBean.atendimento.data.time}" 
+       						pattern="dd/MM/yyyy" 
+       						timeZone="America/Sao_Paulo" 
+       						locale="pt" 
+       						mask="true"
+       						required="true">
+       						
+       						<f:ajax event="blur" render="messageCalendario" />
+       					
+       					</p:calendar>
+       					
+       					<p:message for="data" id="messageCalendario" />
+	
+						<p:outputLabel value="Status:" for="status" />
+						  <p:selectOneMenu id="status" value="#{atendimentoBean.atendimento.status}" style="width:125px">
+						  			<f:selectItem itemLabel="Pendente" itemValue="Pendente" />
+						            <f:selectItem itemLabel="Resolvido" itemValue="Resolvido" />
+						  </p:selectOneMenu>          
+						            
+					</h:panelGrid>
+					
+					<br />
+					
+					<p:commandButton value="Cadastrar" id="cadastro" update="@form formTabelaAtendimento" action="#{atendimentoBean.salvar}" icon="pi pi-save" />
+					<p:tooltip id="dicaCadastro" for="cadastro" value="Clique aqui para cadastrar atendimento" position="right"/>
+	
+				</p:fieldset>
+				
+			</h:form>
+			
+			<br />
+			
+			<!-- 		//apresentação dos dados -->
+			<h:form id="formTabelaAtendimento">
+			
+				<p:dataTable value="#{atendimentoBean.atendimentos}"
+							 var="atendimento" 
+							 id="tabelaAtendimento"
+							 emptyMessage="Nenhum atendimento cadastrado"
+							 paginator="true"
+						     rows="4">
+	
+					<p:column style="text-align:left;">
+						<f:facet name="header">Solicitante</f:facet>
+						<h:outputText value="#{atendimento.solicitante}" />
+					</p:column>
+	
+					<p:column style="text-align:left;">
+						<f:facet name="header">Motivo</f:facet>
+						<h:outputText value="#{atendimento.motivo}" />
+					</p:column>
+	
+					<p:column style="text-align:center;">
+						<f:facet name="header">Data</f:facet>
+						<h:outputText value="#{atendimento.data.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+	
+					<p:column style="text-align:center;">
+						<f:facet name="header">Status</f:facet>
+						<h:outputText value="#{atendimento.status}" />
+					</p:column>
+					
+					<p:column style="text-align: center;">
+					
+						<p:commandButton 
+							icon="pi pi-pencil" 
+							action="#{atendimentoBean.carregar(atendimento)}" 
+							title="Alterar"
+							update=":cad_atendimento"/>
+						
+						<p:commandButton 
+							icon="pi pi-trash" 
+							action="#{atendimentoBean.remover(atendimento)}" 
+							title="Remover"
+							update="@form"/>
+					
+						<p:commandButton 
+							icon="pi pi-check-circle" 
+							title="Resolvido"
+							action="#{atendimentoBean.resolver(atendimento)}"
+							rendered="#{atendimento.status != 'Resolvido'}"
+							update="@form" />
+							
+					</p:column>
+	
+				</p:dataTable>
+				
+			</h:form>
+	
+		</ui:define>
+	
+		<!-- 	<ui:define name="rodapeTitulo"> -->
+		<!-- 		Cad_Aten -->
+		<!-- 	</ui:define> -->
+
+	</ui:composition>
+
+</html>

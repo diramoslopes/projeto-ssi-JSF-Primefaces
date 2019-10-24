@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="_template.xhtml">
+
+		<h:head />
+	
+		<!-- 	<ui:define name="titulo"> -->
+		<!-- 		Cad-Reu -->
+		<!-- 	</ui:define> -->
+	
+		<ui:define name="conteudo">
+	
+			<h:form id="cad_reuniao">
+			
+				<p:fieldset legend="Cadastrar reunião">
+				
+	 				<h:panelGrid columns="3"> 
+	 				
+						<p:outputLabel value="Tipo:" for="tipo" />
+					        <p:selectOneMenu id="tipo" value="#{reuniaoBean.reuniao.tipo}" style="width:125px">
+					            <f:selectItem itemLabel="Presencial" itemValue="Presencial" />
+					            <f:selectItem itemLabel="Video Conferencia" itemValue="Video Conferencia" />
+					            
+					            <f:ajax event="blur" render="messageTipo" />
+					            
+					        </p:selectOneMenu>
+					        
+					    <p:message for="tipo" id="messageTipo" />
+					        
+						<p:outputLabel value="Assunto:" for="assunto" />
+						<p:inputText 
+							id="assunto" 
+							value="#{reuniaoBean.reuniao.assunto}"
+							required="true"
+							requiredMessage="Assunto é obrigatório">
+						
+							<f:ajax event="blur" render="messageAssunto" />
+							<f:passThroughAttribute name="placeholder" value="Ex: Comissão do Leite " />
+						
+						</p:inputText>
+						
+						<p:message for="assunto" id="messageAssunto" />
+	
+						<p:outputLabel value="Data:" for="data" />
+						<p:calendar 
+							id="data" 
+							value="#{reuniaoBean.reuniao.data.time}" 
+							locale="pt"
+							pattern="dd/MM/yyyy"
+							required="true"/>
+						
+						<p:message for="data" id="messageData" />	
+							
+						<p:outputLabel value="Solicitante:" for="solicitante" />
+						
+						<p:inputText
+							id="solicitante"
+							value="#{reuniaoBean.reuniao.solicitante}"
+							required="true" requiredMessage="Solicitante é obrigatório"> 
+							
+							<f:ajax event="blur" render="messageSolicitante" />
+							<f:passThroughAttribute name="placeholder" value="Ex: John Wesley " />
+							
+						</p:inputText>
+						
+						<p:message for="solicitante" id="messageSolicitante" />
+						
+						<p:outputLabel value="Status:" for="status" />
+						 <p:selectOneMenu id="status" value="#{reuniaoBean.reuniao.status}" style="width:125px">
+				            <f:selectItem itemLabel="Agendada" itemValue="Agendada" />
+				            <f:selectItem itemLabel="Realizada" itemValue="Realizada" />
+				        </p:selectOneMenu>
+				        
+				        <p:message for="status" id="messageStatus" />
+				        
+					</h:panelGrid>
+					
+					<br />
+					
+					<p:commandButton value="Cadastrar" id="cadastro" update="@form formTabelaReunioes" action="#{reuniaoBean.salvar}" icon="pi pi-save" />
+					<p:tooltip id="dicaCadastro" for="cadastro" value="Clique aqui para cadastrar reunião" position="right"/>
+					
+				</p:fieldset>
+	
+			</h:form>
+			
+			<br />
+	
+			<!-- 		//apresentação dos dados -->
+			<h:form id="formTabelaReunioes">
+			
+				<p:dataTable 
+					value="#{reuniaoBean.reunioes}" 
+					var="reuniao"
+					id="tabelaReunioes"
+					paginator="true"
+					rows="3">
+	
+					<p:column headerText="Tipo" style="text-align:center;" filterBy="#{reuniao.tipo}" filterMatchMode="startsWith">
+						<h:outputText value="#{reuniao.tipo}" />
+					</p:column>
+	
+					<p:column headerText="Assunto" style="text-align:center;" filterBy="#{reuniao.assunto}" filterMatchMode="contains">
+						<h:outputText value="#{reuniao.assunto}" />
+					</p:column>
+	
+					<p:column headerText="Data" style="text-align:center;" filterBy="#{reuniao.data}" filterMatchMode="contains">
+						<h:outputText value="#{reuniao.data.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Solicitante" style="text-align:center;" filterBy="#{reuniao.solicitante}" filterMatchMode="contains">
+						<h:outputText value="#{reuniao.solicitante}" />
+					</p:column>
+					
+					<p:column headerText="Status" style="text-align:center;" filterBy="#{reuniao.status}" filterMatchMode="contains">
+						<h:outputText value="#{reuniao.status}" />
+					</p:column>
+					
+						<p:column style="text-align: center;">
+					
+							<p:commandButton 
+								icon="pi pi-pencil" 
+								action="#{reuniaoBean.carregar(reuniao)}" 
+								title="Alterar"
+								update=":cad_reuniao"/>
+							
+							<p:commandButton 
+								icon="pi pi-trash" 
+								action="#{reuniaoBean.remover(reuniao)}"
+								title="Remover"
+								update="@form"/>
+								
+							<p:commandButton 
+								icon="pi pi-check-circle" 
+								title="Realizada"
+								action="#{reuniaoBean.realizar(reuniao)}"
+								rendered="#{reuniao.status != 'Realizada'}"
+								update="@form" />
+								
+						</p:column>
+	
+				</p:dataTable>
+				
+			</h:form>
+	
+		</ui:define>
+	
+		<!-- 	<ui:define name="rodapeTitulo"> -->
+		<!-- 		Cad_Reu -->
+		<!-- 	</ui:define> -->
+
+	</ui:composition>
+	
+</html>

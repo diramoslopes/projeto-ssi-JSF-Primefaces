@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="_template.xhtml">
+
+		<h:head />
+	
+		<!-- 	<ui:define name="titulo"> -->
+		<!-- 		Cad-Dept -->
+		<!-- 	</ui:define> -->
+	
+		<ui:define name="conteudo">
+		
+			<h:form id="cad_departamento">
+			
+				<p:fieldset legend="Cadastrar departamento">
+				
+					<h:panelGrid columns="3"> 
+					
+						<p:outputLabel value="Departamento:" for="nome" />
+						<p:inputText 
+							id="nome"
+							value="#{departamentoBean.departamento.nome}"
+							required="true" requiredMessage="Departamento é obrigatório">
+							
+							<f:passThroughAttribute name="placeholder" value="Ex: Design" />
+							<f:ajax event="blur" render="messageDepartamento" />
+						</p:inputText>
+						
+						<p:message for="nome" id="messageDepartamento" />
+						
+						<p:outputLabel value="Entidade:" for="entidade" />
+						        <p:selectOneMenu 
+						        	id="entidade" 
+						        	value="#{departamentoBean.departamento.entidade}" 
+						        	style="width:125px"
+						        	required="true">
+						        	
+						            <f:selectItem itemLabel="FAESP" itemValue="FAESP" />
+						            <f:selectItem itemLabel="SENAR" itemValue="SENAR" />
+						            <f:selectItem itemLabel="FAESPSENAR" itemValue="FAESPSENAR" />
+						       
+						       		<f:ajax event="blur" render="messageEntidade" />
+						        </p:selectOneMenu>
+						        
+						 <p:message for="entidade" id="messageEntidade" />
+							
+						<p:outputLabel value="Chefia:" for="chefia" />
+						<p:inputText 
+							id="chefia"
+							value="#{departamentoBean.departamento.chefia}"
+							required="true" requiredMessage="Chefia é obrigatório">
+							
+							<f:passThroughAttribute name="placeholder" value="Ex: João Calvino" />
+							<f:ajax event="blur" render="messageChefia" />
+						</p:inputText>
+						
+						<p:message for="chefia" id="messageChefia" />
+	
+						<p:outputLabel value="Andar:" for="andar" />
+							  <p:selectOneMenu id="andar" value="#{departamentoBean.departamento.andar}" style="width:125px">
+						            <f:selectItem itemLabel="1° Andar" itemValue="1° Andar" />
+						            <f:selectItem itemLabel="2° Andar" itemValue="2° Andar" />
+						            <f:selectItem itemLabel="3° Andar" itemValue="3° Andar" />
+						            <f:selectItem itemLabel="4° Andar" itemValue="4° Andar" />
+						            <f:selectItem itemLabel="5° Andar" itemValue="5° Andar" />
+						            <f:selectItem itemLabel="6° Andar" itemValue="6° Andar" />
+						            <f:selectItem itemLabel="7° Andar" itemValue="7° Andar" />
+						            <f:selectItem itemLabel="8° Andar" itemValue="8° Andar" />
+						            <f:selectItem itemLabel="9° Andar" itemValue="9° Andar" />
+						            <f:selectItem itemLabel="10° Andar" itemValue="10° Andar" />
+						            <f:selectItem itemLabel="11° Andar" itemValue="11° Andar" />
+						            <f:selectItem itemLabel="12° Andar" itemValue="12° Andar" />
+						            <f:selectItem itemLabel="13° Andar" itemValue="13° Andar" />
+						       </p:selectOneMenu>	
+						
+					</h:panelGrid>
+					
+					<br/>
+					<p:commandButton value="Cadastrar" id="cadastro" update="@form formTabelaDepartamentos" action="#{departamentoBean.salvar}" icon="pi pi-save" />
+					<p:tooltip id="dicaCadastro" for="cadastro" value="Clique aqui para cadastrar departamento" position="right"/>
+					
+					
+				</p:fieldset>
+				
+			</h:form>
+			
+			<br />
+			
+			<!-- 		//apresentação dos dados -->
+			<h:form id="formTabelaDepartamentos">
+				<p:dataTable 
+					value="#{departamentoBean.departamentos}"
+					var="departamento" id="tabelaDepartamentos"
+					paginator="true"
+					rows="4">
+	
+					<p:column style="text-align:center;">
+						<f:facet name="header">Departamento</f:facet>
+						<h:outputText value="#{departamento.nome}" />
+					</p:column>
+	
+					<p:column style="text-align:center;">
+						<f:facet name="header">Entidade</f:facet>
+						<h:outputText value="#{departamento.entidade}" />
+					</p:column>
+	
+					<p:column style="text-align:center;">
+						<f:facet name="header">Chefia</f:facet>
+						<h:outputText value="#{departamento.chefia}" />
+					</p:column>
+	
+					<p:column style="text-align:right;">
+						<f:facet name="header">Andar</f:facet>
+						<h:outputText value="#{departamento.andar}" />
+					</p:column>
+					
+					<p:column style="text-align: center;">
+					
+						<p:commandButton 
+							icon="pi pi-pencil" 
+							action="#{departamentoBean.carregar(departamento)}" 
+							title="Alterar"
+							update=":cad_departamento"/>
+						
+						<p:commandButton 
+							icon="pi pi-trash" 
+							action="#{departamentoBean.remover(departamento)}" 
+							title="Remover"
+							update="@form"/>
+							
+					</p:column>
+					
+				</p:dataTable>
+			</h:form>
+	
+		</ui:define>
+	
+		<!-- 	<ui:define name="rodapeTitulo"> -->
+		<!-- 		Cad_Dept -->
+		<!-- 	</ui:define> -->
+
+	</ui:composition>
+
+</html>

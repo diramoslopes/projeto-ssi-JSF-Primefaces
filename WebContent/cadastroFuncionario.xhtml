@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="_template.xhtml">
+
+		<h:head />
+	
+		<!-- 	<ui:define name="titulo"> -->
+		<!-- 		Cad-Func -->
+		<!-- 	</ui:define> -->
+	
+		<ui:define name="conteudo">
+		
+			<h:form id="cad_funcionario">
+			
+				<p:fieldset legend="Cadastrar funcionario">
+				
+					<h:panelGrid columns="3"> 
+	
+						<p:outputLabel value="Nome:" for="nome" />
+						<p:inputText 
+							 id="nome"
+							 value="#{funcionarioBean.funcionario.nome}"
+							 required="true" requiredMessage="Nome é obrigatório"
+							 style="width: 350px;">
+							 
+							 <f:ajax event="blur" render="messageNome" />
+							 <f:passThroughAttribute name="placeholder" value="Ex: Martin Luther King" />
+						</p:inputText>
+						
+						<p:message for="nome" id="messageNome" />
+	
+						<p:outputLabel value="Email:" for="email" />
+						<p:inputText 
+							id="email"
+							value="#{funcionarioBean.funcionario.email}"
+							required="true" requiredMessage="Email é obrigatório"
+							style="width: 350px;">
+							
+							<f:ajax event="blur" render="messageEmail" />
+							<f:passThroughAttribute name="placeholder" value="Ex: martink@faespsenar.com.br" />
+						</p:inputText>
+						
+						<p:message for="email" id="messageEmail" />
+	
+						<p:outputLabel value="Ramal:" for="ramal" />
+						<p:inputText 
+							id="ramal"
+							value="#{funcionarioBean.funcionario.ramal}"
+							required="true" requiredMessage="Ramal é obrigatório"
+							validatorMessage="Ramal contém 4 digitos">
+							
+							<f:validateLength maximum="4" minimum="4"/>
+							<f:ajax event="blur" render="messageRamal" />
+							<f:passThroughAttribute name="placeholder" value="Ex: 1196" />
+						</p:inputText>
+							
+						<p:message for="ramal" id="messageRamal" />
+	
+						<p:outputLabel value="Patrimonio:" for="patrimonio" />
+						<p:inputText 
+							id="patrimonio"
+							value="#{funcionarioBean.funcionario.patrimonioPc}"
+							required="true" requiredMessage="Patrimonio é obrigatório">
+							
+							<f:ajax event="blur" render="messagePatrimonio" />
+							<f:passThroughAttribute name="placeholder" value="Ex: FAESP-0001" />
+						</p:inputText>
+						
+						<p:message for="patrimonio" id="messagePatrimonio" />
+						
+					</h:panelGrid>
+					
+					<br />
+					
+					<p:commandButton value="Cadastrar" id="cadastro" update="@form formTabelaFuncionarios" action="#{funcionarioBean.salvar}" icon="pi pi-save" />
+					<p:tooltip id="dicaCadastro" for="cadastro" value="Clique aqui para cadastrar funcionario" position="right"/>
+					
+				</p:fieldset>
+	
+			</h:form>
+			
+			<br />
+			
+			<!-- 		//apresentação dos dados -->
+			<h:form id="formTabelaFuncionarios">
+				<p:dataTable 
+					value="#{funcionarioBean.funcionarios}"
+					var="funcionario"
+					id="tabelaFuncionarios"
+					paginator="true"
+					rows="4">>
+	
+					<p:column style="text-align: left;">
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{funcionario.nome}" />
+					</p:column>
+	
+					<p:column style="text-align: center;">
+						<f:facet name="header">Email</f:facet>
+						<h:outputText value="#{funcionario.email}" />
+					</p:column>
+	
+					<p:column style="text-align: center;">
+						<f:facet name="header">Ramal</f:facet>
+						<h:outputText value="#{funcionario.ramal}" />
+					</p:column>
+	
+					<p:column style="text-align: right;">
+						<f:facet name="header">Patrimonio</f:facet>
+						<h:outputText value="#{funcionario.patrimonioPc}" />
+					</p:column>
+					
+					<p:column style="text-align: center;">
+						<p:commandButton 
+							icon="pi pi-pencil" 
+							action="#{funcionarioBean.carregar(funcionario)}" 
+							title="Alterar"
+							update=":cad_funcionario"/>
+						
+						<p:commandButton 
+							icon="pi pi-trash" 
+							action="#{funcionarioBean.remover(funcionario)}" 
+							title="Remover"
+							update="@form"/>
+					</p:column>
+					
+				</p:dataTable>
+			</h:form>
+	
+		</ui:define>
+	
+		<!-- 	<ui:define name="rodapeTitulo"> -->
+		<!-- 		Cad_Func -->
+		<!-- 	</ui:define> -->
+
+	</ui:composition>
+	
+</html>

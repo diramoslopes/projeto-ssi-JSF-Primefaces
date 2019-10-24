@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="_template.xhtml">
+
+		<h:head />
+	
+		<!-- 	<ui:define name="titulo"> -->
+		<!-- 		Cad-Imp -->
+		<!-- 	</ui:define> -->
+	
+		<ui:define name="conteudo">
+			
+			<h:form id="cad_impressora">
+			
+				<p:fieldset legend="Cadastro de Impressora">
+				
+					<h:panelGrid columns="3"> 
+	
+						<p:outputLabel value="Impressora:" for="nome" />
+						<p:inputText 
+							id="nome"
+							value="#{impressoraBean.impressora.nomeImpressora}"
+							required="true" requiredMessage="Nome da Impressora é obrigatório"
+							style="width: 350px;">
+							
+							<f:ajax event="blur" render="messageNome" />
+							<f:passThroughAttribute name="placeholder" value="Ex: Deskjet 970cxi" />
+							
+						</p:inputText>
+						
+						<p:message for="nome" id="messageNome" />
+						
+						<p:outputLabel value="IP:" for="ip" />
+						<p:inputMask 
+							id="ip" 
+							value="#{impressoraBean.impressora.ip}"
+							mask="999.999.99.999"
+							style="width: 350px;">
+							
+							<f:ajax event="blur" render="messageIP" />
+							<f:passThroughAttribute name="placeholder" value="Ex: 192.168.12.106" />
+						</p:inputMask>
+						
+						<p:message for="ip" id="messageIP" />
+						
+						<p:outputLabel value="Patrimonio:" for="patrimonio" />
+						<p:inputText 
+							id="patrimonio"
+							value="#{impressoraBean.impressora.patrimonio}"
+							style="width: 350px;" >
+							
+							<f:ajax event="blur" render="messageNome" />
+							<f:passThroughAttribute name="placeholder" value="Ex: FAESP-0100 / SENAR-0101"/>
+							
+						</p:inputText>
+							
+						<p:message for="patrimonio" id="messagePatrimonio" />
+	
+					</h:panelGrid>
+					
+					<br />
+					
+					<p:commandButton value="Cadastrar" id="cadastro" update="@form formTabelaImpressoras" action="#{impressoraBean.salvar}" icon="pi pi-save" />
+					<p:tooltip id="dicaCadastro" for="cadastro" value="Clique aqui para cadastrar impressora" position="right"/>
+					
+				</p:fieldset>
+	
+			</h:form>
+			
+			<br />
+			
+			<!-- 		//apresentação dos dados -->
+			<h:form id="formTabelaImpressoras">
+
+					<p:dataTable 
+						var="impressora" 
+						value="#{impressoraBean.impressoras}"
+						paginator="true"
+						rows="4">>
+					
+					<p:column style="text-align: center;">
+						<f:facet name="header">Impressora</f:facet>
+						<h:outputText value="#{impressora.nomeImpressora}" />
+					</p:column>
+	
+					<p:column style="text-align: center;">
+						<f:facet name="header">IP</f:facet>
+						<h:outputText value="#{impressora.ip}" />
+					</p:column>
+	
+					<p:column style="text-align: center;">
+						<f:facet name="header">Patrimonio</f:facet>
+						<h:outputText value="#{impressora.patrimonio}" />
+					</p:column>
+					
+					<p:column style="text-align: center;">
+						
+							<p:commandButton 
+								icon="pi pi-pencil" 
+								action="#{impressoraBean.carregar(impressora)}" 
+								title="Alterar"
+								update=":cad_impressora"/>
+							
+							<p:commandButton 
+								icon="pi pi-trash" 
+								action="#{impressoraBean.remover(impressora)}" 
+								title="Remover"
+								update="@form"/>
+					</p:column>
+						
+				</p:dataTable>
+				
+			</h:form>
+	
+		</ui:define>
+	
+		<!-- 	<ui:define name="rodapeTitulo"> -->
+		<!-- 		Cad_Imp -->
+		<!-- 	</ui:define> -->
+
+	</ui:composition>
+	
+</html>

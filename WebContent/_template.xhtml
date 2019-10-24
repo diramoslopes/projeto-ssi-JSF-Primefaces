@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head />
+
+	<h:body>
+	
+		<div id="cabecalho">
+			  <h:graphicImage value="#{resource['img:fsp.PNG']}" />
+			  
+			  <h1><ui:insert name="titulo"></ui:insert></h1>
+			  
+			  <p:menubar>
+			  	
+			  	<p:menuitem value="Menu" url="_template.xhtml" icon="pi pi-home" />
+			  	
+        		<p:submenu label="Arquivo" icon="pi pi-file">
+        			<p:submenu label="Cadastro" icon="pi pi-briefcase">
+		                <p:menuitem value="Atendimento" url="cadastroAtendimento.xhtml" />
+		                <p:menuitem value="Departamento" url="cadastroDepartamento.xhtml" />
+		                <p:menuitem value="Funcionario" url="cadastroFuncionario.xhtml" />
+		                <p:menuitem value="Impressora" url="cadastroImpressora.xhtml" />
+		                <p:menuitem value="Reunião" url="cadastroReuniao.xhtml" />
+		                
+		            </p:submenu>
+		            
+		           <p:separator />
+		           
+           	   </p:submenu>
+           	    		<p:menuitem value="Sair" url="http://www.primefaces.org" icon="pi pi-times" />
+           	 </p:menubar>
+			  
+		</div>
+		
+		<br />
+		
+		<div id="conteudo">
+			<ui:insert name="conteudo">
+			</ui:insert>
+		</div>
+		
+		<br />
+		
+		<div id="rodape">
+			<p:panel id="basic" header="Todos os direitos reservados." style="margin-bottom:20px; text-align:center;">
+				<p align="center">Copyright 2019</p>
+			</p:panel>
+		</div>
+	
+	</h:body>
+
+ <script> PrimeFaces.locales['pt'] = { closeText: 'Fechar', prevText: 'Anterior', nextText: 'Próximo', currentText: 'Começo', monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'], monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'], dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'], dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'], dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'], weekHeader: 'Semana', firstDay: 0, isRTL: false, showMonthAfterYear: false, yearSuffix: '', timeOnlyTitle: 'Só Horas', timeText: 'Tempo', hourText: 'Hora', minuteText: 'Minuto', secondText: 'Segundo', ampm: false, month: 'Mês', week: 'Semana', day: 'Dia', allDayText: 'Todo o Dia' }; </script>
+
+</html>
